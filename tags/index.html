@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/tags/">
+    <link rel="canonical" href="http://ez-hwh.github.io/tags/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -169,16 +169,42 @@
             <!-- 标签云 -->
             <div id='tag_cloud' class="tags">
                 
+                    <a href="#生活" title="生活" rel="1">生活</a>
+                
                     <a href="#自然语言处理" title="自然语言处理" rel="1">自然语言处理</a>
                 
                     <a href="#论文综述" title="论文综述" rel="1">论文综述</a>
-                
-                    <a href="#生活" title="生活" rel="1">生活</a>
                 
             </div>
 
             <!-- 标签列表 -->
 
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="生活">
+                    <span class="tag-text">生活</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2020/06/05/hello-world/">
+                        <h2 class="post-title">
+                            Welcome to Harry Blog
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                 "Hello World, Hello Blog"
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
             
             <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="自然语言处理">
@@ -216,32 +242,6 @@
                         <h2 class="post-title">
                             Distributed Representations of Words and Phrases and their Compositionality
                         </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="生活">
-                    <span class="tag-text">生活</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2020/06/05/hello-world/">
-                        <h2 class="post-title">
-                            Welcome to Harry Blog
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                 "Hello World, Hello Blog"
-                            </h3>
                         
                     </a>
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
@@ -365,7 +365,7 @@
 <script>
     // only load tagcloud.js in tag.html
     if($('#tag_cloud').length !== 0){
-        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+        async("http://ez-hwh.github.io/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 //size: {start: 1, end: 1, unit: 'em'},
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -399,7 +399,7 @@
 
 
 <!-- Image to hack wechat -->
-<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<img src="http://ez-hwh.github.io/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 <script type="text/x-mathjax-config">
