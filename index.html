@@ -3,7 +3,7 @@
 
 <!-- Head tag -->
 <head>
-    <meta charset="utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,13 +56,13 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="">
 
-    <!-- Navigation -->
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -154,13 +154,12 @@
                 <div class="site-heading">
                     <h1>Harry&#39;s Blog</h1>
                     <!--<hr class="small">-->
-                    <span class="subheading">To Be A Rookie\</span>
+                    <span class="subheading">To Be A Rookie</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
-
 
 
 <!-- Main Content -->
@@ -180,6 +179,31 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2020/06/05/nagetive-sampling/">
+        <h2 class="post-title">
+            Distributed Representations of Words and Phrases and their Compositionality
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+第一篇个人的论文综述，水平有限
+
+论文地址：http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf
+Introduction主要介绍了Skipgram的一些特点和问题。Skipgram模型是用来解决词的离散表示方法的（di......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Harry Huang on
+        2020-06-05
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -235,7 +259,7 @@ Qu......
                     <div class="short-about">
 
                         
-                            <img src="//img/avatar.jpg" />
+                            <img src="/img/avatar.jpg" />
                         
 
                         
@@ -431,6 +455,21 @@ Qu......
 <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 
 </html>

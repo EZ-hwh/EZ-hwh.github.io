@@ -13,11 +13,11 @@
 
     <title>
         
-          Welcome to Harry Blog - Harry的博客 | Harry&#39;s Blog
+          Distributed Representations of Words and Phrases and their Compositionality - Harry的博客 | Harry&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2020/06/05/hello-world/">
+    <link rel="canonical" href="http://yoursite.com/2020/06/05/nagetive-sampling/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -154,7 +154,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('post-bg-2015.jpg')
+        background-image: url('/img/home-bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -164,13 +164,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#生活" title="生活">生活</a>
+                          <a class="tag" href="/tags/#自然语言处理" title="自然语言处理">自然语言处理</a>
+                        
+                          <a class="tag" href="/tags/#论文综述" title="论文综述">论文综述</a>
                         
                     </div>
-                    <h1>Welcome to Harry Blog</h1>
-                    <h2 class="subheading"> &quot;Hello World, Hello Blog&quot;</h2>
+                    <h1>Distributed Representations of Words and Phrases and their Compositionality</h1>
+                    <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by Harry on
+                        Posted by Harry Huang on
                         2020-06-05
                     </span>
                 </div>
@@ -190,15 +192,36 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+                <blockquote>
+<p>第一篇个人的论文综述，水平有限</p>
+</blockquote>
+<p>论文地址：<a href="http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="noopener">http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf</a></p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>主要介绍了Skipgram的一些特点和问题。Skipgram模型是用来解决词的离散表示方法的（distributed representation of words），它的最大特点是十分的高效，同时学习的效果很好，能通过学习出来的词向量表示词之间的关系（如vec(“Madrid”) - vec(“Spain”) + vec(“France”) 和vec(“Paris”)很接近）。</p>
+<p>针对Skipgram模型，本篇论文给出了一些拓展：1. 对高频词的子采样（Subsampling）能很大程度加速训练过程（2倍到10倍的加速）。2. 使用噪声对比估计（Noise Contrastive Estimation）能加速训练过程，同时提升高频词的表达准确程度。同时考虑到有些词组的特殊含义，使用词向量表达一个固有的词组能让Skipgram模型更具表达能力。</p>
+<p>将模型从以字为基础（word based）变成以词为基础（phrase based）是十分简单的，对大量的词组扔入模型进行训练。然后将得出的词向量进行向量加减看是否符合语义的表示。</p>
+<h1 id="Skip-gram-Model"><a href="#Skip-gram-Model" class="headerlink" title="Skip-gram Model"></a>Skip-gram Model</h1><p>主要介绍了模型所用到一些具体的trick和技术，有些并不够了解，所以需要后面进行详细的学习。</p>
+<p>首先介绍一下Skip-gram的目标是：给出一个句子中的词序列$w_1,w_2,…w_T$最大化概率函数</p>
+<script type="math/tex; mode=display">
+\frac1T\sum_{t=1}^{T}\sum_{-c\le j\le c,j\ne 0}\log p(w_{t+j}|w_t)</script><p>其中c代表上下文选择的大小，越大的c能有越好的训练效果，但同时训练代价也会上升。对于条件概率函数，一般定义成</p>
+<script type="math/tex; mode=display">
+p(w_O|w_I)=\frac{\exp({v'_{w_O}}^\top v_{w_I})}{\sum_{w=1}^W\exp({v'_{w}}^\top v_{w_I})}</script><p>其中$v_w$和$v’_w$分别代表字$w$的输入向量和输出向量。但是这样子计算梯度进行参数的更新会十分的慢。</p>
+<h2 id="Hierarchical-Softmax"><a href="#Hierarchical-Softmax" class="headerlink" title="Hierarchical Softmax"></a>Hierarchical Softmax</h2><p>因此提出了Hierachical Softmax的概念，将计算W个输出的计算规模变成了计算$\log_2 W$个输出的计算规模（这部分估计后面会专门出一篇文章讲述Hierachical Softmax 的实现和原理）。它使用一棵基于频率而生成的霍夫曼编码二分树的叶子结点来表示W个单词，同时定义条件概率分布</p>
+<script type="math/tex; mode=display">
+p(w|w_I) = \prod_{j=1}^{L(w)-1}\sigma([n(w, j + 1) = ch(n(w, j))]\cdot {v'_{n(w,j)}}^\top v_{w_I})</script><p>其中$n(w,j)$代表从根节点到$w$路径上的第$j$个结点，$L(w)$代表从根节点到$w$的路径长度，$ch(n)$是结点n任意指定好的儿子结点(an arbitrary fixed child of n)，$[x]$是一个示函数，表达式$x$为真时值为1，否则为-1。同时定义$\sigma(x)=1/(1+\exp(-x))$，可以证明$\sum_{w=1}^Wp(w|w_I)=1$。这表明计算$\log p(w_O|w_I)$和$\nabla \log p(w_O|w_I )$都是与$L(w_O)$成比例的。同时，公式中的$v_m$ 和 $v’_n$ 分别表示每个词$w$以及每个二分树中的内点(inner node)。</p>
+<h2 id="负采样"><a href="#负采样" class="headerlink" title="负采样"></a>负采样</h2><p>首先定义负采样的目标函数</p>
+<script type="math/tex; mode=display">
+\log \sigma({v'_{w_O}}^\top v_{w_I})+\sum_{i=1}^k{\mathbb{E}_{w_i \sim P_n(w)}}[\log\sigma(-{v'_{w_i}}^\top v_{w_I})]</script><p>负采样的任务是从逻辑回归训练出来的噪声分布$P_n(w)$中将目标词$w_O$分辨出来，k是每个数据样本对应的负样本个数，一般在5-20个。</p>
+<h2 id="子采样"><a href="#子采样" class="headerlink" title="子采样"></a>子采样</h2><p>对于文本中一些高频词，如a，the，in等，它们给予的有价值信息很少，但是却会严重影响训练的结果。为了处理这种数据间不平衡的情况，需要使用子采样方法。每一个在训练集中的单词有$P(w_i)$的概率被抛弃。</p>
+<script type="math/tex; mode=display">
+P(w_i) = 1-\sqrt \frac{t}{f(w_i)}</script><p>其中$f(w_i)$是词频，而$t$是设定好的阈值，一般在$10^{-5}$左右。</p>
+<h1 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h1><p>比较Hierarchical Softmax，NCE，Negative Sampling和Subsampling的表现。通过Analogical reasoning Task任务对其进行比较。这个任务同时又分成两个方面：<strong>句法类比</strong>和<strong>语义类比</strong>。使用Google内部的数据进行模型的训练，去除词频小于5的词，剩余692K的单词。</p>
+<p>测试结果表明负采样效果好于HS，稍微好于NCE。Skip-gram模型的线性性表明语义分析的线性性，但是同时一些非线性的模型也能很好学习到词语表示的线性关系。</p>
+<h1 id="Learning-Phrases"><a href="#Learning-Phrases" class="headerlink" title="Learning Phrases"></a>Learning Phrases</h1><p>对于某些固定搭配的词组的含义，很难用两个单词向量的直接相加进行表示，但是对于一些词组我们又可以简单将其相加。我们希望能在不大量增加字典的情况下能更好的表示有意义的词组，使用一个数据驱动的方式，计算</p>
+<script type="math/tex; mode=display">
+score(w_i,w_j) = \frac{count(w_iw_j)-\delta}{count(w_i)\times count(w_j)}</script><p>分数高过指定的阈值才将其视为一个词组，这样就能有效减小字典的数据增长量。$\delta$是为了减小词语之间的相关性，同时避免低频词语搭配的出现。一般上会跑2-4轮，并且逐步减小阈值保证能容纳更长的词组。</p>
+<p>实验结果发现，拥有HS和子采样的模型学习到的词组向量表现最好。</p>
+<p>之前曾提到过Skip-gram学习出来的词向量有良好的数学性质：通过简单的向量计算能表达准确的词语含义。同样两个词语向量相加能表达出有意义的内容。其中的解释为：两个词向量与softmax非线性的输入呈线性关系。当训练单词向量以预测句子中周围的单词时，可以将这些向量视为代表单词出现的上下文的分布。 这些值与输出层计算的概率在对数上相关，因此两个单词向量的总和与两个上下文分布的乘积相关。 乘积在这里用作AND函数：被两个单词向量分配高概率的单词将具有较高的概率，而其他单词将具有较低的概率。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这项工作有几个关键贡献。我们展示了如何使用Skip-gram模型训练单词和短语的分布式表示，并演示这些表示形式具有线性结构，从而可以进行精确的类比推理。本文介绍的技术还可以用于训练中介绍的连续词袋模型。由于计算效率高的模型架构，我们成功地对模型进行了比以前发布的模型多几个数量级的数据训练。这极大地提高了所学单词和短语表示的质量，特别是对于稀有实体。我们还发现，频繁单词的二次采样不仅可以加快训练速度，而且可以显着改善不常见单词的表示方式。我们论文的另一个贡献是负采样算法，它是一种非常简单的训练方法，可以学习准确的表示形式，尤其是对于频繁单词的学习。训练算法的选择和超参数的选择是特定于任务的决策，因为我们发现不同的问题具有不同的最佳超参数配置。在我们的实验中，影响性能的最关键的决定因素是模型架构的选择，向量的大小，子采样率和训练窗口的大小。这项工作的一个非常有趣的结果是，仅使用简单的向量加法就可以在某种程度上有意义地组合词向量。学习本文介绍的短语表示的另一种方法是简单地用单个标记表示短语。这两种方法的组合提供了一种强大而简单的方法，即如何表示较长的文本，同时具有最小的计算复杂度。</p>
 
 
                 <hr>
@@ -207,10 +230,10 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2020/06/05/nagetive-sampling/" data-toggle="tooltip" data-placement="top" title="Distributed Representations of Words and Phrases and their Compositionality">&larr; Previous Post</a>
-                        </li>
                     
+                        <li class="next">
+                            <a href="/2020/06/05/hello-world/" data-toggle="tooltip" data-placement="top" title="Welcome to Harry Blog">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -220,6 +243,20 @@
 
             </div>
     <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
         
 
     <!-- Sidebar Container -->
@@ -384,6 +421,50 @@
 
 
 <!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 
