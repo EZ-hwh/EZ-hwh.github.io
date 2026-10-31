@@ -1,0 +1,35 @@
+{
+  "name": "wenhao-huang-homepage",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/gallery.mjs",
+    "dev": "next dev",
+    "gallery": "node scripts/gallery.mjs",
+    "prebuild": "node scripts/gallery.mjs --build",
+    "build": "next build",
+    "postbuild": "node scripts/postbuild.mjs",
+    "preview": "python3 -m http.server 4173 --directory out"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "katex": "^0.18.10",
+    "marked": "^18.1.2",
+    "marked-footnote": "^1.4.0",
+    "marked-gfm-heading-id": "^4.1.4",
+    "marked-katex-extension": "^5.1.13",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "sharp": "^0.35.5",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}
