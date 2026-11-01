@@ -37,6 +37,7 @@ export const photos: Photo[] = [
   { file: "舞子大桥.jpg", title: "Kobe · Wazuka Bridge", date: "2025-06", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
   { file: "kobe.jpg", title: "Kobe · Kobe Port", date: "2025-06", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
   { file: "Miami_beach.jpg", title: "Miami · Miami Beach", date: "2024-12", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
+  { file: "Miami_beach_1.jpg", title: "Miami · Miami Beach", date: "2024-12", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
   { file: "MTL_0.jpg", title: "Montréal · Le Plateau-Mont-Royal", date: "2026-02", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
   { file: "MTL_2.jpg", title: "Montréal · Le Plateau-Mont-Royal", date: "2026-02", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
   { file: "MTL_1.jpg", title: "Montréal · Mount Royal", date: "2025-10", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
@@ -45,4 +46,9 @@ export const photos: Photo[] = [
   { file: "Quebec_city.jpg", title: "Québec City · Old Québec", date: "2025-12", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
   { file: "Quebec_city_1.jpg", title: "Québec City · Old Québec", date: "2025-12", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
   { file: "吴淞.jpg", title: "上海 · 吴淞炮台", date: "2023-05", camera: "Sony A6000 with Tamron 17-70mm f/2.8-4" },
+  { file: "常熟.jpg", title: "常熟 · 常熟古城", date: "2023-03", camera: "Sony A6000 with Tamron 17-70mm f/2.8-4" },
+  { file: "泰州.jpg", title: "泰州 · 溱湖国家湿地公园", date: "2023-04", camera: "Sony A6000 with Tamron 17-70mm f/2.8-4" },
+  { file: "颐和园.jpeg", title: "北京 · 颐和园", date: "2024-11", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
+  { file: "流花湖.jpeg", title: "广州 · 流花湖", date: "2025-01", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
+  { file: "先农坛.jpeg", title: "北京 · 先农坛", date: "2025-05", camera: "Sony A7C2 with Tamron 28-200mm f/2.8-5.6" },
 ];
