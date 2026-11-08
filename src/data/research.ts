@@ -63,6 +63,8 @@ export const publications: Publication[] = [
     topic: "llm-agents",
     links: {
       arxiv: "https://arxiv.org/abs/2605.18597",
+      code: "https://github.com/EZ-hwh/LAR",
+      project: "/projects/lar/",
     },
   },
   {
