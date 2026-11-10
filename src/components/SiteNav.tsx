@@ -5,10 +5,10 @@ import { asset } from "@/lib/asset";
 import { getPhotos } from "@/lib/gallery";
 import { isAvailable } from "@/lib/public-files";
 
-type Page = "blog" | "gallery";
+type Page = "publications" | "blog" | "gallery";
 
 /**
- * The header on every page. Section links point at the homepage, so they work from the blog too.
+ * The header on every page. Section links point at the homepage, so they work from the other pages too.
  * `current` marks the page being viewed. Gallery appears once there is a photo to show.
  */
 export function SiteNav({ current }: { current?: Page }) {
@@ -18,7 +18,7 @@ export function SiteNav({ current }: { current?: Page }) {
   const items: { label: string; href: string; key?: Page }[] = [
     { label: "About", href: `${home}#about` },
     ...(news.length ? [{ label: "News", href: `${home}#news` }] : []),
-    { label: "Publications", href: `${home}#publications` },
+    { label: "Publications", href: asset("/publications/"), key: "publications" as const },
     ...(experience.length ? [{ label: "Experience", href: `${home}#experience` }] : []),
     { label: "Blog", href: asset("/blog/"), key: "blog" as const },
     ...(cv ? [{ label: "CV", href: asset(cv.href) }] : []),

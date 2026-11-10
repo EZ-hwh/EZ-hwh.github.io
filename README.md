@@ -34,6 +34,7 @@ Copy one `{ … }` block in `publications` in `src/data/research.ts` and fill it
   venueNote: "spotlight",          // optional
   type: "conference",              // conference | journal | workshop | preprint
   topic: "llm-agents",             // an id from `topics` above
+  selected: true,                  // optional: also show it on the homepage
   links: { arxiv: "https://…", code: "https://…" },  // paper, pdf, arxiv, code, project, slides, video
 },
 ```
@@ -42,7 +43,9 @@ Your own name is set in bold automatically, and the equal-contribution note appe
 
 ### Order and layout of publications
 
-Papers are listed newest first, under a heading for each year. Within a year they appear in the order of `publications` in `src/data/research.ts`, so put a new paper at the top of its year.
+The homepage shows only the papers marked `selected: true`, under "Selected publications", in the order they appear in `research.ts`. Add or remove that line on a paper to change the selection. The Publications page (`/publications/`, linked in the header) lists every paper.
+
+On the Publications page, papers are listed newest first, under a heading for each year. Within a year they appear in the order of `publications` in `src/data/research.ts`, so put a new paper at the top of its year.
 
 To group papers by research direction instead, set `publicationsLayout = "by-topic"` at the top of `research.ts`. Directions then appear in the order of `topics` and start collapsed (add `expanded: true` to show one open). Every paper's `topic` must be an id from `topics`; otherwise the build stops and says which paper to fix.
 
@@ -110,7 +113,7 @@ src/
   data/                        ← content: edit these
   content/blog/                ← blog posts (Markdown), plus _template.md
   content/gallery/             ← gallery photos, plus _sample prints
-  app/                         pages (home, blog, gallery), styles, fonts, favicon
+  app/                         pages (home, publications, blog, gallery), styles, fonts, favicon
   components/                  one component per part of the page
   lib/                         helpers (the generative print, Markdown, posts)
   types/                       shapes of the data

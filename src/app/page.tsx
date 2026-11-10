@@ -1,7 +1,7 @@
 import { AboutSection } from "@/components/AboutSection";
 import { CyanotypePrint } from "@/components/CyanotypePrint";
 import { NewsSection } from "@/components/NewsSection";
-import { ResearchSection } from "@/components/ResearchSection";
+import { SelectedPapers } from "@/components/SelectedPapers";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { LinesSection, TimelineSection } from "@/components/TimelineSection";
@@ -19,7 +19,7 @@ export default function Home() {
         <main>
           <AboutSection />
           <NewsSection />
-          <ResearchSection />
+          <SelectedPapers />
           <TimelineSection id="education" title="Education" entries={education} />
           <TimelineSection id="experience" title="Experience" entries={experience} />
           <TimelineSection id="projects" title="Projects" entries={projects} />

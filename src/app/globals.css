@@ -380,22 +380,6 @@ main { padding-top: clamp(3.5rem, 8vw, 6rem); }
 }
 .body > .pub-legend + .pub-group { margin-top: 1.4rem; }
 
-/* Publications listed by year: the year, then its papers along a thin rule */
-.body > .pub-legend + .pub-year { margin-top: 1.4rem; }
-.body > .pub-year + .pub-year { margin-top: 2.6rem; }
-.pub-year h3 {
-  font-size: 1.375rem;
-  font-weight: 350;
-  line-height: 1.3;
-  color: var(--prussian);
-  font-variant-numeric: lining-nums;
-}
-.pub-year .pubs {
-  margin: 1.1rem 0 0 0.3rem;
-  padding-left: 1.4rem;
-  border-left: 1px solid color-mix(in srgb, var(--prussian) 22%, transparent);
-}
-
 /* Publications, grouped by research direction. Each group is a <details>:
    the summary (chevron, name, count, one-line description) is always shown,
    the papers fold out underneath, indented along a thin rule. */
@@ -504,6 +488,17 @@ main { padding-top: clamp(3.5rem, 8vw, 6rem); }
   color: var(--muted);
 }
 .body > .note { margin-top: 2rem; }
+
+/* homepage: selected papers, then the way to the full list */
+.body > .pub-legend + .pubs { margin-top: 1.4rem; }
+.pub-more { margin-top: 1.9rem; font-style: italic; }
+.pub-more .arrow { display: inline-block; margin-left: 0.3em; font-style: normal; transition: transform 200ms ease; }
+.pub-more a:hover .arrow { transform: translateX(0.2em); }
+
+/* the Publications page: a count and the legend, then a section per year */
+.pubs-head { align-items: baseline; }
+.pubs-count { font-style: italic; color: var(--muted); font-variant-numeric: lining-nums; }
+.pubs-head .pub-legend { font-size: 1rem; }
 
 /* ---------- Blog ---------- */
 
@@ -853,6 +848,7 @@ html:has(.viewer[open]) { overflow: hidden; }
   }
   .photo-grid { --row: 12rem; }
   .gallery-count { margin-bottom: 0.4rem; }
+  .pubs-count { margin-bottom: 0.4rem; }
 }
 
 @media (max-width: 40rem) {

@@ -1,8 +1,11 @@
 import type { Publication, Topic } from "@/types";
 
 // ---------------------------------------------------------------------------
-// How the Publications section is laid out:
-//   "by-year"  – one list, newest first, with a heading for each year
+// The homepage shows only the papers marked `selected: true` below, under
+// "Selected publications". Every paper is listed on the Publications page (/publications/).
+//
+// How the Publications page is laid out:
+//   "by-year"  – newest first, with a heading for each year
 //   "by-topic" – grouped under the research directions below, each folding open
 // ---------------------------------------------------------------------------
 
@@ -41,6 +44,7 @@ export const topics: Topic[] = [
 // ---------------------------------------------------------------------------
 // Publications
 // Listed newest first. Papers appear in this order within each year (or direction).
+// selected: true puts the paper on the homepage as well; remove the line to take it off.
 // "*" after an author's name marks equal contribution; the footnote appears automatically.
 // Your own name (from profile.ts) is set in bold automatically.
 // type: "conference" | "journal" | "workshop" | "preprint"
@@ -61,6 +65,7 @@ export const publications: Publication[] = [
     venueNote: "also at the ICLR 2026 Workshop on Memory for LLM-Based Agentic Systems",
     type: "conference",
     topic: "llm-agents",
+    selected: true,
     links: {
       arxiv: "https://arxiv.org/abs/2605.18597",
       code: "https://github.com/EZ-hwh/LAR",
@@ -114,6 +119,7 @@ export const publications: Publication[] = [
     year: 2024,
     type: "conference",
     topic: "llm-agents",
+    selected: true,
     links: {
       arxiv: "https://arxiv.org/abs/2404.12753",
       code: "https://github.com/EZ-hwh/AutoScraper",
@@ -127,6 +133,7 @@ export const publications: Publication[] = [
     year: 2024,
     type: "conference",
     topic: "information-extraction",
+    selected: true,
     links: {
       arxiv: "https://arxiv.org/abs/2403.16396",
       code: "https://github.com/EZ-hwh/definition-bias",
@@ -203,6 +210,7 @@ export const publications: Publication[] = [
     year: 2023,
     type: "conference",
     topic: "information-extraction",
+    selected: true,
     links: {
       arxiv: "https://arxiv.org/abs/2306.10787",
       code: "https://github.com/EZ-hwh/AutoExtraction",
@@ -238,5 +246,5 @@ export const publications: Publication[] = [
   },
 ];
 
-// Shown under the list. Set to "" to hide.
+// Shown under the full list on the Publications page. Set to "" to hide.
 export const scholarUrl = "";

@@ -19,6 +19,7 @@ npm run preview   # serve out/ on port 4173
 
 - `src/data/profile.ts`: name, description, About text, links, portrait path.
 - `src/data/news.ts`: news items, newest first, dates as `YYYY-MM`.
+- Publications: the homepage shows papers with `selected: true` (`src/components/SelectedPapers.tsx`; all papers if none is marked) and links to `src/app/publications/page.tsx`, which lists every paper.
 - `src/data/research.ts`: `publicationsLayout` (`"by-year"`, newest first, or `"by-topic"`), `topics` (research directions, in display order) and `publications` (kept newest first). Each paper's `topic` must be a topic id; `src/lib/research.ts` throws at build time otherwise. `*` after an author marks equal contribution.
 - `src/data/cv.ts`: `education`, `experience`, `projects`, `honors` (timelines) and `teachingAndService` (lines). An empty list hides its section. Section order is in `src/app/page.tsx`.
 - Text in data files supports `**bold**`, `*italic*` and `[text](url)` only (`src/lib/richtext.ts`).

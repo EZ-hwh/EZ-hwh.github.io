@@ -65,6 +65,8 @@ export interface Publication {
   type: PublicationType;
   /** The id of one entry in `topics`. */
   topic: string;
+  /** true: also shown on the homepage under "Selected publications". */
+  selected?: boolean;
   links: PublicationLinks;
 }
 
