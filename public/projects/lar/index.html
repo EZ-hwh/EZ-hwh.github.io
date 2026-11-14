@@ -167,7 +167,6 @@ figcaption b { color: var(--ink); font-weight: 650; }
 .stage p { font-family: var(--display); font-size: 14.5px; line-height: 1.5; color: var(--muted); }
 .stage .eq { font-family: var(--body); font-size: 15px; background: var(--bg); border-radius: 8px; padding: 9px 12px; line-height: 1.6; overflow-x: auto; }
 .stage .eq i { font-style: italic; }
-.stage code { font-size: 12px; color: var(--muted); margin-top: auto; overflow-wrap: anywhere; }
 @media (max-width: 960px) { .pipeline { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .pipeline { grid-template-columns: 1fr; } }
 .callout { margin-top: 22px; display: flex; gap: 14px; align-items: flex-start; font-family: var(--display); font-size: 15.5px; line-height: 1.55; }
@@ -1720,28 +1719,24 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: 
         <h3>Find transition-equivalent segments</h3>
         <p>Mine word n-grams inside sentence boundaries from rollouts. Next-token entropy is a tractable surrogate for transition equivalence.</p>
         <div class="eq"><i>H</i>(<i>s</i>) = −Σ<sub><i>w</i>∈<i>V<sub>s</sub></i></sub> <i>p</i>(<i>w</i>|<i>s</i>) log<sub>2</sub> <i>p</i>(<i>w</i>|<i>s</i>)</div>
-        <code>utils/identify_segments.py</code>
       </article>
       <article class="stage">
         <span class="k">STAGE 2</span>
         <h3>Build the latent action vocabulary</h3>
         <p>Keep segments with freq ≥ <i>f</i><sub>min</sub> and <i>H</i> ≤ <i>H</i><sub>max</sub>, rank them, drop overlaps (ρ = 0.7), keep the top <i>K</i> as new symbols <code style="font-size:12px;color:var(--latent)">&lt;seg_k&gt;</code>.</p>
         <div class="eq">score(<i>s</i>) = freq(<i>s</i>) / (<i>H</i>(<i>s</i>) + 1)</div>
-        <code>utils/create_token_mapping.py</code>
       </article>
       <article class="stage">
         <span class="k">STAGE 3</span>
         <h3>Pair each trajectory with its reparameterized twin</h3>
         <p>Longest-first matching replaces vocabulary segments with their symbols. The original τ is the teacher input; the reparameterized τ̂ is the student input.</p>
         <div class="eq"><i>r</i> = Σ<sub><i>i</i></sub> |τ̂<sub><i>i</i></sub>| / Σ<sub><i>i</i></sub> |τ<sub><i>i</i></sub>|</div>
-        <code>utils/build_dataset.py</code>
       </article>
       <article class="stage">
         <span class="k">STAGE 4</span>
         <h3>Distill the teacher into latent embeddings</h3>
         <p>A frozen teacher reads τ; the student (LoRA r = 8, α = 16 on q/k/v/o, plus new embeddings) reads τ̂. KL is taken only on positions with identical text, so the new embeddings must carry what they replaced.</p>
         <div class="eq"><i>L</i><sub>KL</sub> = <sup>1</sup>⁄<sub>|<i>M</i>|</sub> Σ<sub><i>i</i>∈<i>M</i></sub> <i>D</i><sub>KL</sub>(σ(<i>z<sub>i</sub><sup>T</sup></i>/τ) ‖ σ(<i>z<sub>i</sub><sup>S</sup></i>/τ))</div>
-        <code>train.py --use_kl_distillation</code>
       </article>
     </div>
     <p class="callout"><i aria-hidden="true"></i><span>At inference a latent action is looked up and run through the transformer like any other token. Token-level compression therefore turns directly into savings in prefill compute, KV-cache memory and latency, with no decoding or post-processing step.</span></p>
@@ -1810,7 +1805,6 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: 
       </div>
       <div class="figgrid" id="grpo"></div>
     </div>
-    <p class="note" style="margin-top:10px">Re-plotted from the data in the paper's figures. The GRPO curves use the exact plotted coordinates; the ablation points were read off the figure and match the corresponding entries of the main results table.</p>
   </div>
 </section>
 
@@ -1841,16 +1835,11 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: 
 </footer>
 
 <script>
-/* LAR engine: a line-by-line JavaScript port of
- *   utils/identify_segments.py   (Algorithm 1, latent action identification)
- *   utils/create_token_mapping.py (segment -> <seg_k>)
- *   replace_text_with_tokens      (longest-first replacement, evaluation/*.py)
- * from https://github.com/EZ-hwh/LAR
- */
+/* LAR engine: latent action identification and token replacement. */
 var LAREngine = (function () {
-  var TOK_RE = /<\/?[^>]+>|\S+/g;           // tokenize_with_html
-  var TAG_RE = /<\/?[^>]+>/g;               // html_tag_pattern
-  var SENT_RE = /[.!?;\n]+/;                // split_into_sentences
+  var TOK_RE = /<\/?[^>]+>|\S+/g;           
+  var TAG_RE = /<\/?[^>]+>/g;               
+  var SENT_RE = /[.!?;\n]+/;                
 
   function tokenizeWithHtml(s) { return s.match(TOK_RE) || []; }
   function splitSentences(t) {
@@ -1955,7 +1944,6 @@ var LAREngine = (function () {
       segs = segs.concat(hstats.slice(0, K));
     }
     funnel.kept = segs.length;
-    // create_token_mapping: <seg_idx> in list order
     segs.forEach(function (s, idx) { s.token = '<seg_' + idx + '>'; s.id = idx; });
     return { segments: segs, funnel: funnel };
   }
@@ -1965,7 +1953,6 @@ var LAREngine = (function () {
   }
   function wordSet(s) { var o = new Set(); s.split(/\s+/).forEach(function (w) { if (w) o.add(w); }); return o; }
 
-  // filter_redundant_segments
   function filterRedundant(stats, rho) {
     var filtered = [], fsets = [];
     for (var i = 0; i < stats.length; i++) {
@@ -1986,7 +1973,7 @@ var LAREngine = (function () {
     return filtered;
   }
 
-  /* replace_text_with_tokens, longest-first; a segment is replaced where it is
+  /* Longest-first replacement; a segment is replaced where it is
      followed by a space. Returns pieces with original char offsets so the
      page can draw latent chips and check parameter spans. */
   function reparameterize(text, segments) {
@@ -2028,9 +2015,6 @@ if (typeof module !== 'undefined') module.exports = LAREngine;
 
 </script>
 <script>
-/* Toy rollout corpora for the in-page demo. System prompts are copied verbatim
- * from the LAR repository's evaluators; trajectories are hand-written
- * illustrations in the same format (not real model rollouts). */
 var LARCorpora = (function () {
   var SYS_TQA = "You are a helpful assistant. Answer the given question using an external search engine.\n\nTOOL SPECIFICATION:\nYou have access to a search engine. To use it, you must wrap your search query in these specific tags:\n<search> query </search>\n\nThe system will execute the search query and provide the results in an <observation> tag.\n\nOUTPUT FORMAT:\nYour output must STRICTLY follow this cycle:\n1. <think> [reasoning about what information is missing or needs verification] </think>\n2. <search> [search query] </search>\n3. ... Wait for <observation> ...\n4. Repeat until you have the final answer.\n5. <answer> [final answer] </answer>\n\nCONSTRAINTS:\n- Do not rely solely on internal knowledge for obscure facts. Use the tool.\n- Output the final answer ONLY when you have verified it with the search results.\n- Keep the final answer concise (e.g., entity name or short phrase) inside the answer tags.";
 
@@ -2149,8 +2133,6 @@ if (typeof module !== 'undefined') module.exports = LARCorpora;
 
 </script>
 <script>
-/* Re-plotted from the paper. GRPO curves: exact coordinates recovered from the vector figure.
-   Ablation points: digitized from the raster figure, checked against Table 1 (80.09 @ 27.1%, 28.30 @ 20.8%, 24.40 @ 0%). */
 var LARFIG = {"ablation":{"a":{"title":"TriviaQA \u00b7 Qwen3-8B","xmax":40,"xstep":10,"ymin":78.4,"ymax":80.25,"yticks":[78.5,79.0,79.5,80.0],"base":78.67,"boundary":2,"pts":[[0,78.67,1],[18.4,79.62,1],[27.1,80.09,1],[33.6,78.89,1],[35.2,78.52,0]]},"b":{"title":"Mind2Web \u00b7 Llama-3.1-8B","xmax":35,"xstep":5,"ymin":24,"ymax":29.3,"yticks":[24,25,26,27,28,29],"base":24.4,"boundary":3,"pts":[[0,24.4,1],[8.9,27.85,1],[20.8,28.3,1],[27.6,28.85,1],[29.4,28.36,1],[34.1,24.61,0]]}},"grpo":{"a":{"title":"TriviaQA \u00b7 Llama-3.1-8B","xmax":10000,"xstep":2000,"ymin":40,"ymax":70,"yticks":[40,50,60,70],"LAR":[[0,44.24],[256,44.76],[512,49.7],[768,46.99],[1024,54.93],[1280,51.93],[1536,55.87],[1792,56.38],[2048,55.36],[2304,57.63],[2560,55.8],[2816,57.23],[3072,59.04],[3328,58.54],[3584,55.91],[3840,55.6],[4096,58.86],[4352,60.91],[4608,60.04],[4864,60.47],[5120,61.99],[5376,62.25],[5632,58.77],[5888,54.7],[6144,60.44],[6400,57.69],[6656,57.24],[6912,59.8],[7168,60.89],[7424,57.3],[7680,56.96],[7936,59.45],[8192,61.03],[8448,60.64],[8704,61.27],[8960,61.82],[9216,61.93],[9472,63.25],[9728,60.65]],"Vanilla":[[0,46.02],[256,45.91],[512,44.61],[768,43.05],[1024,47.05],[1280,42.03],[1536,43.54],[1792,45.38],[2048,44.82],[2304,48.32],[2560,44.24],[2816,46.53],[3072,47.56],[3328,48.0],[3584,45.53],[3840,46.15],[4096,52.25],[4352,55.54],[4608,51.79],[4864,54.1],[5120,54.02],[5376,56.41],[5632,54.0],[5888,51.27],[6144,56.13],[6400,52.63],[6656,56.89],[6912,57.64],[7168,57.95],[7424,56.21],[7680,55.76],[7936,59.44],[8192,58.53],[8448,58.37],[8704,60.24],[8960,59.4],[9216,59.87],[9472,60.4],[9728,58.66]]},"b":{"title":"TriviaQA \u00b7 Qwen3-8B","xmax":30000,"xstep":5000,"ymin":70,"ymax":85,"yticks":[70,75,80,85],"LAR":[[0,77.72],[512,76.57],[1024,78.8],[1536,77.51],[2048,77.5],[2560,77.36],[3072,79.83],[3584,76.81],[4096,79.31],[4608,77.7],[5120,78.75],[5632,80.63],[6144,76.79],[6656,76.75],[7168,80.64],[7680,72.23],[8192,78.11],[8704,78.32],[9216,77.83],[9728,77.39],[10240,80.21],[10752,76.62],[11264,79.69],[11776,79.7],[12288,76.62],[12800,76.45],[13312,78.06],[13824,77.27],[14336,78.61],[14848,80.04],[15360,74.55],[15872,75.39],[16384,79.99],[16896,75.09],[17408,73.67],[17920,79.79],[18432,79.26],[18944,79.13],[19456,81.41],[19968,81.2],[20480,79.1],[20992,77.27],[21504,76.93],[22016,80.26],[22528,76.86],[23040,77.1],[23552,78.72],[24064,77.14],[24576,77.48],[25088,79.24],[25600,78.23],[26112,76.29],[26624,80.35],[27136,81.75],[27648,75.68],[28160,78.63],[28672,79.33],[29184,78.81],[29696,79.82],[30208,82.48]],"Vanilla":[[0,77.1],[512,74.62],[1024,78.94],[1536,76.75],[2048,75.56],[2560,78.55],[3072,81.38],[3584,79.9],[4096,79.79],[4608,77.67],[5120,79.99],[5632,78.63],[6144,76.93],[6656,75.94],[7168,79.69],[7680,72.39],[8192,80.13],[8704,79.16],[9216,78.64],[9728,75.89],[10240,81.46],[10752,76.6],[11264,80.69],[11776,80.35],[12288,79.19],[12800,76.84],[13312,78.47],[13824,74.06],[14336,78.71],[14848,79.15],[15360,74.6],[15872,74.54],[16384,80.69],[16896,75.82],[17408,74.4],[17920,79.96],[18432,79.87],[18944,83.98],[19456,81.46],[19968,80.3],[20480,81.48],[20992,76.7],[21504,78.61],[22016,80.81],[22528,77.65],[23040,77.08],[23552,79.57],[24064,77.01],[24576,81.1],[25088,80.94],[25600,77.37],[26112,78.47],[26624,79.75],[27136,82.09],[27648,77.56],[28160,77.51],[28672,80.26],[29184,75.05],[29696,80.22],[30208,80.26]]}}};
 
 </script>
